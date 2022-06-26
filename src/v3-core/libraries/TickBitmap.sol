@@ -17,10 +17,7 @@ library TickBitmap {
         returns (int16 wordPos, uint8 bitPos)
     {
         wordPos = int16(tick >> 8);
-        int24 x = tick % 256;
-        assembly {
-            bitPos := mload(add(x, 0x20))
-        }
+        bitPos = tickToPos(tick);
     }
 
     /// @notice Flips the initialized state for a given tick from false to true, or vice versa
@@ -68,13 +65,9 @@ library TickBitmap {
             // overflow/underflow is possible, but prevented externally by limiting both tickSpacing and tick
             if (initialized) {
                 result = bitPos - BitMath.mostSignificantBit(masked);
-                assembly {
-                    temp := mload(add(result, 0x20))
-                }
+                temp = unsignedInt8ToInt24(result);
             } else {
-                assembly {
-                    temp := mload(add(bitPos, 0x20))
-                }
+                temp = unsignedInt8ToInt24(bitPos);
             }
             next = (compressed - temp) * tickSpacing;
         } else {
@@ -89,16 +82,27 @@ library TickBitmap {
             // overflow/underflow is possible, but prevented externally by limiting both tickSpacing and tick
             if (initialized) {
                 result = BitMath.leastSignificantBit(masked) - bitPos;
-                assembly {
-                    temp := mload(add(result, 0x20))
-                }
+                temp = unsignedInt8ToInt24(result);
             } else {
                 bitPos = type(uint8).max - bitPos;
-                assembly {
-                    temp := mload(add(bitPos, 0x20))
-                }
+                temp = unsignedInt8ToInt24(bitPos);
             }
             next = (compressed + 1 + temp) * tickSpacing;
+        }
+    }
+
+    function unsignedInt8ToInt24(uint8 x) private pure returns (int24) {
+        assembly ("memory-safe") {
+            mstore(0x40, x)
+            return(0x40, 32)
+        }
+    }
+
+    function tickToPos(int24 tick) private pure returns (uint8) {
+        assembly ("memory-safe") {
+            let pos := mod(tick, 256)
+            mstore(0x40, pos)
+            return(0x40, 32)
         }
     }
 }
