@@ -5,10 +5,9 @@ The existing package is often a problem with a version, so there is no problem w
 
 The files in the list below have not been modified according to the version.
 
-* v3-periphery/libraries/NFTDescriptor.sol
-* v3-periphery/libraries/NFTSVG.sol
-* v3-periphery/libraries/OracleLibrary.sol
-* v3-periphery/libraries/PoolTicksCounter.sol
+- v3-periphery/libraries/NFTDescriptor.sol
+- v3-periphery/libraries/NFTSVG.sol
+- v3-periphery/libraries/PoolTicksCounter.sol
 
 ## Installation
 
@@ -27,6 +26,6 @@ forge install Nipol/UniswapV3Pack
 ## License
 
 In all cases using this code, each Uniswap original license is followed.
-* [https://github.com/Uniswap/v3-core](https://github.com/Uniswap/v3-core]
-)
-* [https://github.com/Uniswap/v3-periphery](https://github.com/Uniswap/v3-periphery)
+
+- [https://github.com/Uniswap/v3-core](https://github.com/Uniswap/v3-core])
+- [https://github.com/Uniswap/v3-periphery](https://github.com/Uniswap/v3-periphery)
