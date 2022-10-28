@@ -37,10 +37,8 @@ library OracleLibrary {
         bool isArithmeticMeanTick;
 
         assembly {
-            arithmeticMeanTick := div(tickCumulativesDelta, secondsAgo)
-            isArithmeticMeanTick := not(
-                iszero(mod(tickCumulativesDelta, secondsAgo))
-            )
+            arithmeticMeanTick := sdiv(tickCumulativesDelta, secondsAgo)
+            isArithmeticMeanTick := not(mod(tickCumulativesDelta, secondsAgo))
         }
 
         // arithmeticMeanTick = int24(tickCumulativesDelta / secondsAgo);
@@ -168,7 +166,7 @@ library OracleLibrary {
 
         uint32 delta = observationTimestamp - prevObservationTimestamp;
         assembly {
-            tick := div(sub(tickCumulative, prevTickCumulative), delta)
+            tick := sdiv(sub(tickCumulative, prevTickCumulative), delta)
         }
         uint128 liquidity = uint128(
             (uint192(delta) * type(uint160).max) /
